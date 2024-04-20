@@ -30,6 +30,7 @@ Compiled successfully!
 * client run on port 3000 by default
 
 
-# TODO:
-1. add comment about lock
-2. add comment about ws
+# Few comments:
+1. due to the third requirement "Limit is the max number of times it can be purchased by the
+user." i did not add a lock for an offer while a user is purchasing, in case the limit is per offer and not per user a lock is required.
+2. for the seventh requirement i use websocket to notify every client (tab) that a purchase has being placed so they will refresh the ui with the up to date limit. due to websocket 10k ports issue if the app should support more then a few thousands of online users i would replace the websocket with long pulling or some kind of pub/sub.
