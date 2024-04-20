@@ -1,10 +1,5 @@
 import mongoose from 'mongoose';
 
-interface ItemAttrs {
-  title: string;
-  limit: number;
-}
-
 export interface ItemDoc extends mongoose.Document {
   title: string;
   limit: number;

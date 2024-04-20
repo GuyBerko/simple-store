@@ -1,12 +1,13 @@
-import './App.css';
 import ItemsGrid from './components/ItemsGrid';
-
-const userId = '66211f3e34a3525316347cd9';
+import './App.css';
+// the backend is wrote to support multiple users adn there is no way to sign in at the client
+// so user identification is currently hardcoded
+import { DEFAULT_USER_ID } from './config';
 
 const App = () => {
   return (
     <div className='App'>
-      <ItemsGrid userId={userId} />
+      <ItemsGrid userId={DEFAULT_USER_ID} />
     </div>
   );
 };

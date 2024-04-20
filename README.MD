@@ -28,3 +28,8 @@ Server run on port 4000
 Compiled successfully!
 ```
 * client run on port 3000 by default
+
+
+# TODO:
+1. add comment about lock
+2. add comment about ws

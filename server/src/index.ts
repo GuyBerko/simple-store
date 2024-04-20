@@ -10,6 +10,7 @@ import startWsServer from './web-socket';
 
 const app = express();
 
+// required environment variables that we are not able to run the server without them
 const REQUIRED_VARIABLES = ['MONGO_URL'];
 
 (async () => {

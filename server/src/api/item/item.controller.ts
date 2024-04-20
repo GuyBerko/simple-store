@@ -4,6 +4,7 @@ import * as itemService from './item.service';
 export const getAll = async (req: Request, res: Response) => {
   try {
     const items = await itemService.getAllItems();
+
     res.send(items);
   } catch (err) {
     console.error('Error fetching all items', err);

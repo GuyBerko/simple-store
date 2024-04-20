@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { SERVER_BASE_URL } from '../config';
 
 export const useItems = () => {
   const [items, setItems] = useState([]);
@@ -6,7 +7,7 @@ export const useItems = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const data = await fetch(`http://localhost:4000/items`).then((response) => response.json());
+        const data = await fetch(`${SERVER_BASE_URL}/items`).then((response) => response.json());
         setItems(data);
       } catch (err) {
         console.error('Error fetching items', err);
@@ -18,21 +19,21 @@ export const useItems = () => {
   return items;
 };
 
-export const useUserPurchases = (userId, refreshPurchased) => {
+export const useUserPurchases = (userId, shouldRefreshPurchased) => {
   const [purchased, setPurchased] = useState([]);
 
   useEffect(() => {
     if (!userId) return;
     const fetchOrders = async () => {
       try {
-        const data = await fetch(`http://localhost:4000/users/${userId}/orders`).then((response) => response.json());
+        const data = await fetch(`${SERVER_BASE_URL}/users/${userId}/orders`).then((response) => response.json());
         setPurchased(data);
       } catch (err) {
-        console.error('Error fetching items', err);
+        console.error('Error fetching user purchases', err);
       }
     };
     fetchOrders();
-  }, [userId, refreshPurchased]);
+  }, [userId, shouldRefreshPurchased]);
 
   return purchased;
 };

@@ -15,10 +15,11 @@ export const setUpMockData = async (): Promise<void> => {
       await Item.insertMany(mockItems);
     }
 
-    const user = await User.findById('66211f3e34a3525316347cd9').exec();
+    // creating default user because we don't have yet the ability to sign in 
+    const user = await User.findById(process.env.DEFAULT_USER_ID).exec();
 
     if (!user){
-      await new User({ name: 'test-user', _id: '66211f3e34a3525316347cd9' }).save();
+      await new User({ name: 'test-user', _id: process.env.DEFAULT_USER_ID }).save();
     }
 
     console.log('Successfully initialize mock data in mongodb');
