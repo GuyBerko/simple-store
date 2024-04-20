@@ -1,12 +1,7 @@
 import * as ws from 'ws';
 import config from './config';
 
-const usersMap = new Map<
-  string,
-  {
-    [wsKey: string]: ws.WebSocket;
-  }
->();
+const usersMap = new Map<string, Map<string, ws.WebSocket>>();
 
 export const sendMessage = (userId: string, message: string) => {
   const userSockets = usersMap.get(userId);
@@ -14,8 +9,8 @@ export const sendMessage = (userId: string, message: string) => {
     console.error('[sendMessage] - user does not exist in socket map');
     return;
   }
-  const wsClients = Object.values(userSockets);
-  wsClients.forEach((userSocket) => {
+  
+  userSockets.forEach((userSocket) => {
     userSocket.send(message);
   });
 };
@@ -25,12 +20,12 @@ const startWsServer = () => {
     console.log(`[socket] - Socket server started on port ${config.socket.port}`);
   });
 
-  server.on('connection', function (userSocket, _incomingMessage) {
+  server.on('connection', (userSocket, _incomingMessage) => {
     if (!_incomingMessage.url) {
       console.error('[socket][connection] - url undefined');
       return;
     }
-    
+
     const userId = new URLSearchParams(_incomingMessage.url.replace('/', '')).get('userId');
     if (!userId) {
       console.error('[socket][connection] - userId undefined', _incomingMessage.url);
@@ -41,18 +36,20 @@ const startWsServer = () => {
     const userSockets = usersMap.get(userId);
 
     if (!userSockets) {
-      usersMap.set(userId, { wsKey: userSocket });
+      const wsMap = new Map<string, ws.WebSocket>();
+      wsMap.set(wsKey, userSocket);
+      usersMap.set(userId, wsMap);
     } else {
-      userSockets[wsKey] = userSocket;
+      userSockets.set(wsKey, userSocket);
     }
 
-    userSocket.on('close', function (code, _reason) {
+    userSocket.on('close', (code, _reason) => {
       const wsClients = usersMap.get(userId);
 
-      if (!wsClients || Object.keys(wsClients).length <= 1) {
+      if (!wsClients || wsClients.size <= 1) {
         usersMap.delete(userId);
       } else {
-        delete wsClients[wsKey];
+        wsClients?.delete(wsKey);
       }
 
       console.log(`[socket][connection] - ${userId} closed the connection: exit code ${code}`);
