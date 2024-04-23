@@ -58,24 +58,28 @@ const ItemsGrid = ({ userId }) => {
   );
 
   return (
-    <Container>
+    <Container className='items-grid-wrapper'>
       <Box sx={{ m: 2 }}>
         {loading && (
           <div className='loader-wrapper'>
             <CircularProgress size={150} className='loader' />
           </div>
         )}
-        <Grid container spacing={4}>
-          {items.map((item) => (
-            <ItemCard
-              title={item.title}
-              limit={item.limit}
-              key={item.id}
-              itemsRemains={item.limit - (purchased[item.id] || 0)}
-              onClick={() => onOrder(item.id)}
-            />
-          ))}
-        </Grid>
+        {items.length ? (
+          <Grid container spacing={4}>
+            {items.map((item) => (
+              <ItemCard
+                title={item.title}
+                limit={item.limit}
+                key={item.id}
+                itemsRemains={item.limit - (purchased[item.id] || 0)}
+                onClick={() => onOrder(item.id)}
+              />
+            ))}
+          </Grid>
+        ) : (
+          <div>No items found</div>
+        )}
       </Box>
     </Container>
   );
