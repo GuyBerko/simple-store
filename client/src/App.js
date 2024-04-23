@@ -7,6 +7,7 @@ import { DEFAULT_USER_ID } from './config';
 const App = () => {
   return (
     <div className='App'>
+      <div className='header'><h1>Simple Store</h1></div>
       <ItemsGrid userId={DEFAULT_USER_ID} />
     </div>
   );
